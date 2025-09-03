@@ -17,8 +17,14 @@ arch=$(get_arch)
 # Get the appropriate asset name for this platform/architecture
 asset_name=$(get_asset_name "$platform" "$arch")
 
-# Construct the download URL
+# Resolve version if "latest" is specified
 version="$ASDF_INSTALL_VERSION"
+if [ "$version" = "latest" ]; then
+	# Get the latest stable version
+	version=$("${plugin_dir}/bin/latest-stable")
+fi
+
+# Construct the download URL
 url="https://github.com/lycheeverse/lychee/releases/download/lychee-v${version}/${asset_name}"
 
 echo "* Downloading $TOOL_NAME $version for ${platform}-${arch}..."
