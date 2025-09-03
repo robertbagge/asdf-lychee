@@ -3,17 +3,20 @@
 ## Lychee Project Overview
 
 **lychee** is a fast, async, stream-based link checker written in Rust.
-- GitHub: https://github.com/lycheeverse/lychee
+
+- GitHub: <https://github.com/lycheeverse/lychee>
 - Latest version: v0.20.1 (as of research date)
 - Installation methods: Binary releases, Cargo, Docker, various package managers
 
 ## Binary Release Pattern Analysis
 
 ### Version Naming
+
 - Release tags follow pattern: `lychee-vX.Y.Z` (e.g., `lychee-v0.20.1`)
 - Version numbers follow semantic versioning
 
 ### Available Binary Assets (v0.20.1)
+
 ```
 lychee-aarch64-unknown-linux-gnu.tar.gz
 lychee-aarch64-unknown-linux-musl.tar.gz
@@ -28,6 +31,7 @@ lychee-x86_64-windows.exe
 ```
 
 ### Platform/Architecture Mapping for asdf
+
 - **macOS ARM64 (Apple Silicon)**: `lychee-arm64-macos.tar.gz`
 - **macOS x86_64**: Not directly available, may need to use Rosetta or build from source
 - **Linux x86_64**: `lychee-x86_64-unknown-linux-gnu.tar.gz` or musl variant
@@ -37,9 +41,11 @@ lychee-x86_64-windows.exe
 ## Required asdf Plugin Scripts
 
 ### 1. `bin/list-all` (Required)
+
 Lists all installable versions. Must output space-separated list with newest last.
 
 **Implementation approach:**
+
 ```bash
 # Use GitHub API to list releases
 curl -s "https://api.github.com/repos/lycheeverse/lychee/releases" | \
@@ -50,36 +56,44 @@ curl -s "https://api.github.com/repos/lycheeverse/lychee/releases" | \
 ```
 
 ### 2. `bin/download` (Required)
+
 Downloads binary for specified version to `$ASDF_DOWNLOAD_PATH`.
 
 **Key environment variables:**
+
 - `ASDF_INSTALL_VERSION`: Version to install
 - `ASDF_DOWNLOAD_PATH`: Where to download files
 
 **Implementation approach:**
+
 1. Detect platform/architecture using `uname -s` and `uname -m`
 2. Map to appropriate binary asset name
 3. Download from: `https://github.com/lycheeverse/lychee/releases/download/lychee-v${version}/${asset_name}`
 4. Extract tarball to `$ASDF_DOWNLOAD_PATH`
 
 ### 3. `bin/install` (Required)
+
 Installs from downloaded files to `$ASDF_INSTALL_PATH`.
 
 **Key environment variables:**
+
 - `ASDF_INSTALL_PATH`: Installation target directory
 - `ASDF_DOWNLOAD_PATH`: Source of downloaded files
 - `ASDF_CONCURRENCY`: Number of cores for parallel operations
 
 **Implementation approach:**
+
 1. Create `$ASDF_INSTALL_PATH/bin`
 2. Copy/move lychee binary from `$ASDF_DOWNLOAD_PATH` to `$ASDF_INSTALL_PATH/bin/`
 3. Ensure executable permissions (`chmod +x`)
 4. Verify with `lychee --version`
 
 ### 4. `bin/latest-stable` (Optional but recommended)
+
 Returns latest stable version, excluding pre-releases.
 
 **Implementation approach:**
+
 ```bash
 curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" | \
   grep '"tag_name":' | \
@@ -87,9 +101,11 @@ curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" | \
 ```
 
 ### 5. `bin/help.overview` (Optional)
+
 Provides plugin description.
 
 **Example content:**
+
 ```
 lychee is a fast, async, stream-based link checker written in Rust.
 It finds broken URLs and mail addresses inside Markdown, HTML, reStructuredText,
@@ -156,6 +172,7 @@ get_asset_name() {
 ## GitHub API Rate Limiting
 
 Handle rate limiting with authentication token:
+
 ```bash
 curl_opts=(-fsSL)
 if [ -n "${GITHUB_API_TOKEN:-}" ]; then
@@ -166,6 +183,7 @@ fi
 ## Testing the Plugin
 
 Use asdf's built-in test command:
+
 ```bash
 asdf plugin test lychee . 'lychee --version'
 ```
@@ -173,6 +191,7 @@ asdf plugin test lychee . 'lychee --version'
 ## CI/CD Considerations
 
 ### GitHub Actions Workflow
+
 ```yaml
 name: Test
 on: [push, pull_request]
@@ -192,6 +211,7 @@ jobs:
 ## Current Implementation Status
 
 The current template in `/Users/robertbagge/code/asdf/asdf-lychee/lib/utils.bash`:
+
 - Has placeholder GitHub repo URL (needs update to lycheeverse/lychee)
 - Has generic download logic (needs platform-specific binary download)
 - Missing proper version listing from GitHub releases
@@ -233,6 +253,7 @@ The current template in `/Users/robertbagge/code/asdf/asdf-lychee/lib/utils.bash
 ## Reference Implementations
 
 Good examples to follow:
+
 - **asdf-golang**: Clean implementation with checksums
 - **asdf-nodejs**: Comprehensive platform detection
 - **asdf-rust**: Similar Rust binary distribution pattern
