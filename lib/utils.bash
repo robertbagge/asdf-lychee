@@ -67,6 +67,10 @@ get_asset_name() {
 		macos-aarch64|macos-arm64)
 			echo "lychee-arm64-macos.tar.gz"
 			;;
+		macos-x86_64)
+			# x86_64 macOS users can use the ARM64 binary via Rosetta 2
+			echo "lychee-arm64-macos.tar.gz"
+			;;
 		linux-x86_64)
 			echo "lychee-x86_64-unknown-linux-gnu.tar.gz"
 			;;
