@@ -23,7 +23,7 @@ install_lychee() {
 
 	# Find and move the lychee binary
 	echo "* Installing lychee binary..."
-	
+
 	# The binary should be directly in ASDF_DOWNLOAD_PATH after extraction
 	if [ -f "$ASDF_DOWNLOAD_PATH/lychee" ]; then
 		cp "$ASDF_DOWNLOAD_PATH/lychee" "$bin_path/lychee"
