@@ -1,0 +1,8 @@
+.claude
+.env
+.env.example
+.envrc
+.envrc.local
+.envrc.default
+.mcp.json
+CLAUDE.md
