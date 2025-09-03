@@ -4,7 +4,6 @@ set -euo pipefail
 
 GH_REPO="https://github.com/lycheeverse/lychee"
 TOOL_NAME="lychee"
-TOOL_TEST="lychee --version"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -41,9 +40,9 @@ list_all_versions() {
 get_platform() {
 	local platform
 	case "$(uname -s)" in
-		Darwin) platform="macos" ;;
-		Linux) platform="linux" ;;
-		*) fail "Unsupported platform: $(uname -s)" ;;
+	Darwin) platform="macos" ;;
+	Linux) platform="linux" ;;
+	*) fail "Unsupported platform: $(uname -s)" ;;
 	esac
 	echo "$platform"
 }
@@ -51,10 +50,10 @@ get_platform() {
 get_arch() {
 	local arch
 	case "$(uname -m)" in
-		x86_64) arch="x86_64" ;;
-		aarch64|arm64) arch="aarch64" ;;
-		armv7l) arch="arm" ;;
-		*) fail "Unsupported architecture: $(uname -m)" ;;
+	x86_64) arch="x86_64" ;;
+	aarch64 | arm64) arch="aarch64" ;;
+	armv7l) arch="arm" ;;
+	*) fail "Unsupported architecture: $(uname -m)" ;;
 	esac
 	echo "$arch"
 }
@@ -62,26 +61,25 @@ get_arch() {
 get_asset_name() {
 	local platform="$1"
 	local arch="$2"
-	
+
 	case "${platform}-${arch}" in
-		macos-aarch64|macos-arm64)
-			echo "lychee-arm64-macos.tar.gz"
-			;;
-		macos-x86_64)
-			fail "lychee does not provide x86_64 macOS binaries. ARM64 binaries are available for Apple Silicon Macs, or you can build from source."
-			;;
-		linux-x86_64)
-			echo "lychee-x86_64-unknown-linux-gnu.tar.gz"
-			;;
-		linux-aarch64)
-			echo "lychee-aarch64-unknown-linux-gnu.tar.gz"
-			;;
-		linux-arm)
-			echo "lychee-arm-unknown-linux-gnueabihf.tar.gz"
-			;;
-		*)
-			fail "No prebuilt binary available for ${platform}-${arch}"
-			;;
+	macos-aarch64 | macos-arm64)
+		echo "lychee-arm64-macos.tar.gz"
+		;;
+	macos-x86_64)
+		fail "lychee does not provide x86_64 macOS binaries. ARM64 binaries are available for Apple Silicon Macs, or you can build from source."
+		;;
+	linux-x86_64)
+		echo "lychee-x86_64-unknown-linux-gnu.tar.gz"
+		;;
+	linux-aarch64)
+		echo "lychee-aarch64-unknown-linux-gnu.tar.gz"
+		;;
+	linux-arm)
+		echo "lychee-arm-unknown-linux-gnueabihf.tar.gz"
+		;;
+	*)
+		fail "No prebuilt binary available for ${platform}-${arch}"
+		;;
 	esac
 }
-
