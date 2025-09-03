@@ -34,12 +34,18 @@ This plugin downloads pre-built binaries from lychee releases. The following pla
 
 \*lychee does not provide x86_64 macOS binaries. Intel Mac users need to [build from source](https://github.com/lycheeverse/lychee#build-from-source) using Cargo.
 
-# Supported Lychee versions
+# Supported Versions
 
-- 0.20.1 ("latest" version as of writing this)
-- 0.19.0
-- 0.18.0
-- 0.16.1 # oldest supported version
+## Version Compatibility
+
+| Version Range | Linux | macOS (ARM64) | Notes                                     |
+| ------------- | ----- | ------------- | ----------------------------------------- |
+| 0.19.0+       | ✅    | ✅            | Full support with .tar.gz binaries        |
+| 0.16.1-0.18.1 | ✅    | ⚠️            | macOS only has .dmg files (not supported) |
+| 0.16.0        | ❌    | ❌            | No binary assets available                |
+| < 0.16.0      | ❌    | ❌            | Different tag format, not supported       |
+
+The plugin supports versions from 0.16.1 onwards on Linux, and 0.19.0 onwards on macOS.
 
 # Install
 
