@@ -31,9 +31,16 @@ list_github_tags() {
 
 list_all_versions() {
 	# Use GitHub API to list all releases for lychee
+	# Only include versions 0.16.1 and later (0.16.0 has no binaries)
 	curl "${curl_opts[@]}" "https://api.github.com/repos/lycheeverse/lychee/releases" |
 		grep -o '"tag_name": "lychee-v[^"]*' |
-		sed 's/"tag_name": "lychee-v//'
+		sed 's/"tag_name": "lychee-v//' |
+		while read -r version; do
+			# Filter out 0.16.0 which has no binary assets
+			if [ "$version" != "0.16.0" ]; then
+				echo "$version"
+			fi
+		done
 }
 
 # Platform and architecture detection functions
