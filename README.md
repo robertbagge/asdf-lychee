@@ -1,24 +1,51 @@
 <div align="center">
 
-# asdf-lychee [![Build](https://github.com/robertbagge/asdf-lychee/actions/workflows/build.yml/badge.svg)](https://github.com/robertbagge/asdf-lychee/actions/workflows/build.yml) [![Lint](https://github.com/robertbagge/asdf-lychee/actions/workflows/lint.yml/badge.svg)](https://github.com/robertbagge/asdf-lychee/actions/workflows/lint.yml)
+# asdf-lychee [![Build](https://github.com/robertbagge/asdf-lychee/actions/workflows/test.yml/badge.svg)](https://github.com/robertbagge/asdf-lychee/actions/workflows/test.yml)
 
-[lychee](https://github.com/robertbagge/asdf-lychee) plugin for the [asdf version manager](https://asdf-vm.com).
+[lychee](https://github.com/lycheeverse/lychee) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
 # Contents
 
 - [Dependencies](#dependencies)
+- [Supported Platforms](#supported-platforms)
+- [Supported Lychee versions](#supported-lychee-versions)
 - [Install](#install)
 - [Contributing](#contributing)
 - [License](#license)
 
 # Dependencies
 
-**TODO: adapt this section**
+- `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html)
+- `GITHUB_API_TOKEN`: Optional - set to avoid GitHub API rate limits when downloading
 
-- `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+# Supported Platforms
+
+This plugin downloads pre-built binaries from lychee releases. The following platforms are supported:
+
+| Platform | Architecture          | Status             |
+| -------- | --------------------- | ------------------ |
+| Linux    | x86_64                | ✅ Supported       |
+| Linux    | aarch64 (ARM64)       | ✅ Supported       |
+| Linux    | armv7                 | ✅ Supported       |
+| macOS    | Apple Silicon (ARM64) | ✅ Supported       |
+| macOS    | Intel (x86_64)        | ❌ Not available\* |
+
+\*lychee does not provide x86_64 macOS binaries. Intel Mac users need to [build from source](https://github.com/lycheeverse/lychee#build-from-source) using Cargo.
+
+# Supported Versions
+
+## Version Compatibility
+
+| Version Range | Linux | macOS (ARM64) | Notes                                     |
+| ------------- | ----- | ------------- | ----------------------------------------- |
+| 0.19.0+       | ✅    | ✅            | Full support with .tar.gz binaries        |
+| 0.16.1-0.18.1 | ✅    | ⚠️            | macOS only has .dmg files (not supported) |
+| 0.16.0        | ❌    | ❌            | No binary assets available                |
+| < 0.16.0      | ❌    | ❌            | Different tag format, not supported       |
+
+The plugin supports versions from 0.16.1 onwards on Linux, and 0.19.0 onwards on macOS.
 
 # Install
 

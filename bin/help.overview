@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+cat <<EOF
+lychee - A fast, async, stream-based link checker written in Rust
+
+lychee finds broken URLs and mail addresses inside Markdown, HTML, 
+reStructuredText, websites, and more. It's designed to be fast and 
+reliable, with support for checking links in parallel.
+
+Features:
+- Fast, async link checking
+- Supports multiple file formats (Markdown, HTML, reStructuredText, etc.)
+- Can check websites recursively
+- Configurable retry and timeout settings
+- Supports exclusion patterns
+- Available as a CLI tool, GitHub Action, and library
+
+GitHub: https://github.com/lycheeverse/lychee
+EOF
