@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for lychee.
-GH_REPO="https://github.com/robertbagge/asdf-lychee"
+GH_REPO="https://github.com/lycheeverse/lychee"
 TOOL_NAME="lychee"
 TOOL_TEST="lychee --version"
 
@@ -25,50 +24,61 @@ sort_versions() {
 }
 
 list_github_tags() {
+	# lychee uses tags like "lychee-vX.Y.Z"
 	git ls-remote --tags --refs "$GH_REPO" |
-		grep -o 'refs/tags/.*' | cut -d/ -f3- |
-		sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
+		grep -o 'refs/tags/lychee-v[0-9].*' | cut -d/ -f3- |
+		sed 's/^lychee-v//' # Remove "lychee-v" prefix to get clean version numbers
 }
 
 list_all_versions() {
-	# TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-	# Change this function if lychee has other means of determining installable versions.
-	list_github_tags
+	# Use GitHub API to list all releases for lychee
+	curl "${curl_opts[@]}" "https://api.github.com/repos/lycheeverse/lychee/releases" |
+		grep -o '"tag_name": "lychee-v[^"]*' |
+		sed 's/"tag_name": "lychee-v//'
 }
 
-download_release() {
-	local version filename url
-	version="$1"
-	filename="$2"
-
-	# TODO: Adapt the release URL convention for lychee
-	url="$GH_REPO/archive/v${version}.tar.gz"
-
-	echo "* Downloading $TOOL_NAME release $version..."
-	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+# Platform and architecture detection functions
+get_platform() {
+	local platform
+	case "$(uname -s)" in
+		Darwin) platform="macos" ;;
+		Linux) platform="linux" ;;
+		*) fail "Unsupported platform: $(uname -s)" ;;
+	esac
+	echo "$platform"
 }
 
-install_version() {
-	local install_type="$1"
-	local version="$2"
-	local install_path="${3%/bin}/bin"
-
-	if [ "$install_type" != "version" ]; then
-		fail "asdf-$TOOL_NAME supports release installs only"
-	fi
-
-	(
-		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
-
-		# TODO: Assert lychee executable exists.
-		local tool_cmd
-		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
-
-		echo "$TOOL_NAME $version installation was successful!"
-	) || (
-		rm -rf "$install_path"
-		fail "An error occurred while installing $TOOL_NAME $version."
-	)
+get_arch() {
+	local arch
+	case "$(uname -m)" in
+		x86_64) arch="x86_64" ;;
+		aarch64|arm64) arch="aarch64" ;;
+		armv7l) arch="arm" ;;
+		*) fail "Unsupported architecture: $(uname -m)" ;;
+	esac
+	echo "$arch"
 }
+
+get_asset_name() {
+	local platform="$1"
+	local arch="$2"
+	
+	case "${platform}-${arch}" in
+		macos-aarch64|macos-arm64)
+			echo "lychee-arm64-macos.tar.gz"
+			;;
+		linux-x86_64)
+			echo "lychee-x86_64-unknown-linux-gnu.tar.gz"
+			;;
+		linux-aarch64)
+			echo "lychee-aarch64-unknown-linux-gnu.tar.gz"
+			;;
+		linux-arm)
+			echo "lychee-arm-unknown-linux-gnueabihf.tar.gz"
+			;;
+		*)
+			fail "No prebuilt binary available for ${platform}-${arch}"
+			;;
+	esac
+}
+
