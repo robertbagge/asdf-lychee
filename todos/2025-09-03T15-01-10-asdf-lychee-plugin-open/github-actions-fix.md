@@ -17,20 +17,23 @@ This happens because:
 
 ## Solution (Implemented)
 
-Fixed by explicitly specifying the correct gitref in `.github/workflows/build.yml`:
+Fixed by explicitly specifying the branch name as gitref in `.github/workflows/build.yml`:
 
 ```yaml
 - name: asdf_plugin_test
   uses: asdf-vm/actions/plugin-test@v4
   with:
     command: lychee --version
-    gitref: ${{ github.event.pull_request.head.sha || github.sha }}
+    gitref: ${{ github.head_ref || github.ref_name }}
 ```
 
 This configuration:
-- Uses the actual PR head commit SHA for pull requests (`github.event.pull_request.head.sha`)
-- Falls back to the current SHA for push events (`github.sha`)
-- Ensures the action always uses a commit that exists in the repository
+- Uses the PR branch name for pull requests (`github.head_ref`)
+- Falls back to the branch name for push events (`github.ref_name`)
+- Ensures the action uses a branch that exists in the remote repository
+
+**Why branch name instead of commit SHA?**
+The `asdf plugin test` command clones the plugin from the repository URL, not from a local checkout. It needs a reference (branch, tag) that exists in the remote repository. Individual commit SHAs often don't exist as standalone refs in the remote.
 
 ## Verification
 
