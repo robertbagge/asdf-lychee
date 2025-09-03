@@ -6,12 +6,12 @@ Create an asdf plugin for <https://github.com/lycheeverse/lychee>. This plugin s
 
 ## Work Artifacts
 
-| Agent          | File                    | Purpose                                         |
-| -------------- | ----------------------- | ----------------------------------------------- |
-| task-manager   | index.md                | Task index and tracking                        |
-| researcher     | research.md             | Technical research and implementation guidance |
+| Agent          | File                     | Purpose                                         |
+| -------------- | ------------------------ | ----------------------------------------------- |
+| task-manager   | index.md                 | Task index and tracking                        |
+| researcher     | research.md              | Technical research and implementation guidance |
 | orchestrator   | implementation-prompt.md | Prompt for coding agent implementation         |
-| implementation | implementation.md       | Progress tracking and implementation notes     |
+| implementation | implementation.md        | Progress tracking and implementation notes     |
 
 ## Notes
 
