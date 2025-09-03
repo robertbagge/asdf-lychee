@@ -10,6 +10,7 @@
 
 - [Dependencies](#dependencies)
 - [Supported Platforms](#supported-platforms)
+- [Supported Lychee versions](#supported-lychee-versions)
 - [Install](#install)
 - [Contributing](#contributing)
 - [License](#license)
@@ -23,15 +24,22 @@
 
 This plugin downloads pre-built binaries from lychee releases. The following platforms are supported:
 
-| Platform | Architecture | Status |
-|----------|--------------|--------|
-| Linux | x86_64 | ✅ Supported |
-| Linux | aarch64 (ARM64) | ✅ Supported |
-| Linux | armv7 | ✅ Supported |
-| macOS | Apple Silicon (ARM64) | ✅ Supported |
-| macOS | Intel (x86_64) | ❌ Not available* |
+| Platform | Architecture          | Status             |
+| -------- | --------------------- | ------------------ |
+| Linux    | x86_64                | ✅ Supported       |
+| Linux    | aarch64 (ARM64)       | ✅ Supported       |
+| Linux    | armv7                 | ✅ Supported       |
+| macOS    | Apple Silicon (ARM64) | ✅ Supported       |
+| macOS    | Intel (x86_64)        | ❌ Not available\* |
 
-*lychee does not provide x86_64 macOS binaries. Intel Mac users need to [build from source](https://github.com/lycheeverse/lychee#build-from-source) using Cargo.
+\*lychee does not provide x86_64 macOS binaries. Intel Mac users need to [build from source](https://github.com/lycheeverse/lychee#build-from-source) using Cargo.
+
+# Supported Lychee versions
+
+- 0.20.1 ("latest" version as of writing this)
+- 0.19.0
+- 0.18.0
+- 0.16.1 # oldest supported version
 
 # Install
 
